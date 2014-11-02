@@ -1,6 +1,5 @@
 <?php
 /**
- * aheadWorks Co.
  *
  * NOTICE OF LICENSE
  *
@@ -20,8 +19,6 @@
  * @category   More
  * @package    More_Mobile
  * @version    1.6.6
- * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
- * @license    http://ecommerce.aheadworks.com/More-LICENSE.txt
  */
 
 
