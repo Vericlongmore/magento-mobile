@@ -25,21 +25,23 @@
  */
 
 
-class More_Mobile_RedirectController extends Mage_Core_Controller_Front_Action
+class More_Mobile_Block_Customer_Account_Dashboard_Info extends Mage_Downloadable_Block_Customer_Products_List
 {
     
-    protected function _addNotice($message)
+    /**
+     * Return url to download link
+     *
+     * @param Mage_Downloadable_Model_Link_Purchased_Item $item
+     * @return string
+     */
+    public function getDownloadUrl($item)
     {
-        Mage::getSingleton('core/session')->addNotice($message);
-        return $this;
-    }
+        return $this->getUrl('downloadable/download/link', array('id' => $item->getLinkHash(), '_secure' => true));
+    }        
 
-    public function customerAction()
+    public function getUnavailableUrl()
     {
-        $this->_addNotice(Mage::helper('Moremobile')->__('The opportunity of using this tab is not supported yet'));
-
-        $this->_redirect('customer/account');
+        return $this->getUrl('Moremobile/downloadable/noway');
     }
-
-
+    
 }

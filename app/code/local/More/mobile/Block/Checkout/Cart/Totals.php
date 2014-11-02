@@ -25,21 +25,30 @@
  */
 
 
-class More_Mobile_RedirectController extends Mage_Core_Controller_Front_Action
+class More_Mobile_Block_Checkout_Cart_Totals extends Mage_Checkout_Block_Cart_Totals
 {
+    /**
+     * Retrives cart totals
+     * @return array
+     */
+    public function getTotals() 
+    {
+        return parent::getTotals();
+    }
     
-    protected function _addNotice($message)
+    protected function _getTotalRenderer($code)
     {
-        Mage::getSingleton('core/session')->addNotice($message);
-        return $this;
-    }
+        $result = null;
+        try {                     
+            $result = parent::_getTotalRenderer($code);
+        } catch (Exception $e) {
 
-    public function customerAction()
-    {
-        $this->_addNotice(Mage::helper('Moremobile')->__('The opportunity of using this tab is not supported yet'));
-
-        $this->_redirect('customer/account');
-    }
-
-
+        }
+            
+        if ($result) {
+            return $result;
+        } else {
+            return new Mage_Core_Block_Template();
+        }                
+    }    
 }

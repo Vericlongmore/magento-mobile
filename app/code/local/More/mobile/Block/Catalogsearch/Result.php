@@ -23,23 +23,35 @@
  * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
  * @license    http://ecommerce.aheadworks.com/More-LICENSE.txt
  */
+ 
 
-
-class More_Mobile_RedirectController extends Mage_Core_Controller_Front_Action
+class More_Mobile_Block_Catalogsearch_Result extends Mage_CatalogSearch_Block_Result
 {
-    
-    protected function _addNotice($message)
+    /**
+     * Helper
+     * @return More_Mobile_Helper_Data
+     */
+    public function _helper()
     {
-        Mage::getSingleton('core/session')->addNotice($message);
+        return Mage::helper('Moremobile');
+    }
+        
+    /**
+     * Set search available list orders
+     *
+     * @return Mage_CatalogSearch_Block_Result
+     */
+    public function setListOrders()
+    {
+        parent::setListOrders();
+
+        if (!$this->_helper()->checkVersion('1.4.0.0')
+            && $this->getListBlock()
+            && ($this->getListBlock()->getSortBy() == 'relevance')
+        ) {
+            $this->getListBlock()->setDefaultDirection('asc');
+        }
         return $this;
     }
-
-    public function customerAction()
-    {
-        $this->_addNotice(Mage::helper('Moremobile')->__('The opportunity of using this tab is not supported yet'));
-
-        $this->_redirect('customer/account');
-    }
-
-
+    
 }

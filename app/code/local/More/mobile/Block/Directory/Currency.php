@@ -25,21 +25,28 @@
  */
 
 
-class More_Mobile_RedirectController extends Mage_Core_Controller_Front_Action
+/**
+ * Currency Switcher
+ */
+class  More_Mobile_Block_Directory_Currency extends Mage_Directory_Block_Currency
 {
+    /**
+     * Helper
+     * @return More_Mobile_Helper_Data
+     */
+    protected function _helper()
+    {
+        return Mage::helper('Moremobile');
+    }
     
-    protected function _addNotice($message)
+    public function getSwitchCurrencyUrl($code) 
     {
-        Mage::getSingleton('core/session')->addNotice($message);
-        return $this;
+        if (!$this->_helper()->checkVersion('1.4.0.0')) {
+            return $this->helper('directory/url')->getSwitchCurrencyUrl()."currency/".$code;
+        } else {        
+            return parent::getSwitchCurrencyUrl($code);
+        }
     }
-
-    public function customerAction()
-    {
-        $this->_addNotice(Mage::helper('Moremobile')->__('The opportunity of using this tab is not supported yet'));
-
-        $this->_redirect('customer/account');
-    }
-
-
+    
+    
 }

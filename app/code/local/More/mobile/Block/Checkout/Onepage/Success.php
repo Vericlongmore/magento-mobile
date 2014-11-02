@@ -25,21 +25,22 @@
  */
 
 
-class More_Mobile_RedirectController extends Mage_Core_Controller_Front_Action
+class More_Mobile_Block_Checkout_Onepage_Success extends Mage_Checkout_Block_Onepage_Success
 {
-    
-    protected function _addNotice($message)
+    protected $_order = null;
+
+    public function getOrder()
     {
-        Mage::getSingleton('core/session')->addNotice($message);
-        return $this;
+        if (!$this->_order) {
+            if ($this->getOrderId()) {
+                $this->_order = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId());
+            }
+        }
+        return $this->_order;
     }
 
-    public function customerAction()
+    public function getCanViewOrder()
     {
-        $this->_addNotice(Mage::helper('Moremobile')->__('The opportunity of using this tab is not supported yet'));
-
-        $this->_redirect('customer/account');
+        return ($this->getOrder() && $this->getOrder()->getCustomerId());
     }
-
-
 }

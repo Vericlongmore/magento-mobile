@@ -25,21 +25,30 @@
  */
 
 
-class More_Mobile_RedirectController extends Mage_Core_Controller_Front_Action
+class More_Mobile_Block_Catalog_Product_View extends Mage_Catalog_Block_Product_View
 {
-    
-    protected function _addNotice($message)
+    /**
+     * Retrieve url for direct adding product to cart
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param array $additional
+     * @return string
+     */
+    public function getAddToCartUrl($product, $additional = array())
     {
-        Mage::getSingleton('core/session')->addNotice($message);
-        return $this;
+        $url = parent::getAddToCartUrl($product, $additional);
+        $url = str_replace('/checkout/', '/Moremobile/', $url);
+        return $url;
     }
 
-    public function customerAction()
+    /**
+     * Retrives product price
+     * @param Mage_Catalog_Model_Product $product
+     * @return string
+     */
+    public function getPrice($product)
     {
-        $this->_addNotice(Mage::helper('Moremobile')->__('The opportunity of using this tab is not supported yet'));
-
-        $this->_redirect('customer/account');
+        return $product->getPriceModel()->getFormatedPrice($product);
     }
-
-
+     
 }
